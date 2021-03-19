@@ -8,12 +8,10 @@ import (
 	"fmt"
 	"github.com/lestrrat-go/jwx/jwa"
 	"github.com/lestrrat-go/jwx/jws"
-	_ "github.com/lestrrat-go/jwx/jws"
 	"io/ioutil"
 	"math/rand"
 	"net/http"
 	"net/url"
-	"os"
 	"strings"
 	"sync"
 	"time"
@@ -104,13 +102,13 @@ type AccessResp struct {
 
 func SignPayload(payload string) (string, error) {
 
-	headers := jws.NewHeaders()
+	headers := &jws.StandardHeaders{}
 	headers.Set(jws.AlgorithmKey, jwa.PS256)
 	headers.Set(jws.KeyIDKey, "7c992d92-41ae-4c26-a393-54aa9c9310c9")
 	headers.Set(jws.CriticalKey, []string{"http://openbanking.org.uk/tan"})
 	headers.Set("http://openbanking.org.uk/tan", "openbanking-demo.tymurkhr.repl.co")
 
-	keyBytes, err := os.ReadFile("private.key")
+	keyBytes, err := ioutil.ReadFile("private.key")
 	if err != nil {
 		return "", err
 	}
