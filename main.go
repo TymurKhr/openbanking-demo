@@ -85,7 +85,7 @@ func payment(w http.ResponseWriter, req *http.Request) {
 	consentReq.Header.Set("Authorization", fmt.Sprintf("Bearer %s", ar.AccessToken))
 	consentReq.Header.Set("X-Jws-Signature", signature)
 
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := http.DefaultClient.Do(consentReq)
 	if err != nil {
 		panic(err)
 	}
@@ -106,7 +106,7 @@ func SignPayload(payload string) (string, error) {
 	headers.Set(jws.AlgorithmKey, jwa.PS256)
 	headers.Set(jws.KeyIDKey, "7c992d92-41ae-4c26-a393-54aa9c9310c9")
 	headers.Set(jws.CriticalKey, []string{"http://openbanking.org.uk/tan"})
-	headers.Set("http://openbanking.org.uk/tan", "openbanking-demo.tymurkhr.repl.co")
+	headers.Set("http://openbanking.org.uk/tan", "openbanking-demo-1.tymurkhr.repl.co")
 
 	keyBytes, err := ioutil.ReadFile("private.key")
 	if err != nil {
